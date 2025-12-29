@@ -40,6 +40,10 @@ export function getWorkflowPaths(customPaths?: string[]): string[] {
 
 /**
  * Load a single workflow by name
+ *
+ * Searches by:
+ * 1. Filename match (workflows/name.ts)
+ * 2. Workflow name property (loads all and finds matching name)
  */
 export async function loadWorkflow(
   name: string,
@@ -47,6 +51,7 @@ export async function loadWorkflow(
 ): Promise<LoadedWorkflow> {
   const paths = getWorkflowPaths(searchPaths);
 
+  // First, try direct filename match
   for (const searchPath of paths) {
     // Try direct file: workflows/name.ts
     const directPath = resolve(searchPath, `${name}.ts`);
@@ -64,6 +69,14 @@ export async function loadWorkflow(
         }
       }
     }
+  }
+
+  // If no filename match, search by workflow name property
+  const allWorkflows = await listWorkflows(searchPaths);
+  const found = allWorkflows.find(w => w.definition.name === name);
+
+  if (found) {
+    return found;
   }
 
   throw new Error(`Workflow not found: ${name}\nSearched in: ${paths.join(', ')}`);

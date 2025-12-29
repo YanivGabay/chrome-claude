@@ -6,7 +6,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "bin": {
-    "chrome-claude": "./dist/cli.js"
+    "chrome-claude": "./bin/chrome-claude.js"
   },
   "scripts": {
     "build": "tsc",
@@ -27,7 +27,8 @@
   "dependencies": {
     "commander": "^12.1.0",
     "glob": "^11.0.0",
-    "handlebars": "^4.7.8"
+    "handlebars": "^4.7.8",
+    "tsx": "^4.21.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
@@ -37,6 +38,8 @@
     "node": ">=18"
   },
   "files": [
+    "bin",
+    "src",
     "dist",
     "skill",
     "workflows"
